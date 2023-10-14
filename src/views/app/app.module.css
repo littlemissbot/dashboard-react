@@ -1,0 +1,16 @@
+.sider {
+  overflow: auto;
+  height: 100vh;
+  padding: 1rem;
+}
+.header {
+  padding: 0 2rem;
+}
+.avatarName {
+  margin: 0 !important;
+  line-height: 1.25 !important;
+  text-align: left;
+}
+.content {
+  padding: 2rem;
+}
