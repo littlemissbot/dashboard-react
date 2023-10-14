@@ -1,16 +1,29 @@
 .sider {
   overflow: auto;
   height: 100vh;
+  border-right: 1px solid #e8e8e8;
+}
+.logo {
+  border-bottom: 1px solid #e8e8e8;
+  padding: 0.6rem 0;
+  text-align: center;
+}
+.menu {
+  border: 0 !important;
   padding: 1rem;
 }
 .header {
   padding: 0 2rem;
+  border-bottom: 1px solid #e8e8e8;
 }
 .avatarName {
   margin: 0 !important;
-  line-height: 1.25 !important;
   text-align: left;
+  line-height: 1 !important;
+}
+.avatarRole {
+  display: block;
 }
 .content {
-  padding: 2rem;
+  padding: 0 2rem;
 }

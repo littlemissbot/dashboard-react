@@ -1,9 +1,35 @@
 import React from "react";
-import { Row, Col, Card, Statistic } from "antd";
+import { FileExcelOutlined, FilterOutlined } from "@ant-design/icons";
+import { Space, Typography, Button, Row, Col, Card, Statistic } from "antd";
+
+const { Title, Text } = Typography;
 
 const Dashboard = () => {
   return (
     <div>
+      <Space
+        align="end"
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          marginBottom: "1rem",
+        }}
+      >
+        <div>
+          <Title level={5} style={{ marginBottom: 0 }}>
+            Welcome Back,
+          </Title>
+          <Text type="secondary">Dashboard Overview</Text>
+        </div>
+        <Space>
+          <Button type="default" icon={<FilterOutlined />}>
+            Filter by
+          </Button>
+          <Button type="primary" icon={<FileExcelOutlined />}>
+            Export
+          </Button>
+        </Space>
+      </Space>
       <Row gutter={[16, 16]}>
         <Col span={6}>
           <Card>
