@@ -4,6 +4,7 @@
  */
 import { configureStore } from "@reduxjs/toolkit";
 import productsSlice from "./slices/productsSlice";
+import dashboardsSlice from "./slices/dashboardsSlice";
 
 /**
  * Redux store instance.
@@ -14,5 +15,6 @@ import productsSlice from "./slices/productsSlice";
 export default configureStore({
   reducer: {
     products: productsSlice,
+    dashboards: dashboardsSlice,
   },
 });

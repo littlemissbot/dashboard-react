@@ -6,6 +6,7 @@ import { createBrowserRouter } from "react-router-dom";
  */
 import AuthLayout from "../views/auth";
 import Login from "../views/auth/Login";
+import Register from "../views/auth/Register";
 
 /**
  * The root element of the private route.
@@ -64,6 +65,10 @@ const publicRoutes = [
          * @type {React.Component}
          */
         element: <Login />,
+      },
+      {
+        path: "/register",
+        element: <Register />,
       },
     ],
   },

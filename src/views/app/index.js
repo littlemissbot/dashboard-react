@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   UserOutlined,
   LogoutOutlined,
@@ -21,7 +21,7 @@ import {
   Typography,
   Button,
 } from "antd";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 
 import styles from "./app.module.css";
 import logo from "../../logo.png";
@@ -40,6 +40,15 @@ const menuItems = [
 ];
 
 function AppLayout() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const user = localStorage.getItem("user");
+    if (!user) {
+      navigate("/login");
+    }
+  }, []);
+
   return (
     <ConfigProvider
       theme={{

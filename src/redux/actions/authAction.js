@@ -30,7 +30,7 @@ export const authLogin = (payload) => () => {
   });
 };
 
-export const authRegister = (payload) => (dispatch) => {
+export const authRegister = (payload) => () => {
   return new Promise((resolve, reject) => {
     publicPostApi("/auth/register", payload)
       .then((response) => {

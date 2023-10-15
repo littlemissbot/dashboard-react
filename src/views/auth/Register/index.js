@@ -1,26 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Form, Input, Button, Typography } from "antd";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const { Text } = Typography;
 
-const Login = () => {
+const Register = () => {
   const [isLoading, setLoading] = useState(false);
   const [form] = Form.useForm();
-  const navigate = useNavigate();
 
   const onSubmit = (values) => {
     setLoading(true);
-    localStorage.setItem("user", JSON.stringify(values));
-    navigate("/app");
+    // TODO: Call API to submit form
   };
-
-  useEffect(() => {
-    const user = localStorage.getItem("user");
-    if (user) {
-      navigate("/app");
-    }
-  }, []);
 
   return (
     <>
@@ -33,6 +24,17 @@ const Login = () => {
           minWidth: 400,
         }}
       >
+        <Form.Item
+          name="name"
+          rules={[
+            {
+              required: true,
+              message: "Please input your name!",
+            },
+          ]}
+        >
+          <Input placeholder="Your Name" />
+        </Form.Item>
         <Form.Item
           name="emailAddress"
           rules={[
@@ -59,15 +61,15 @@ const Login = () => {
 
         <Form.Item>
           <Button type="primary" htmlType="submit" loading={isLoading}>
-            Login
+            Create new account
           </Button>
         </Form.Item>
       </Form>
       <Text>
-        Don't have an account? <Link to="/register">Register</Link>
+        Already have an account? <Link to="/">Login</Link>
       </Text>
     </>
   );
 };
 
-export default Login;
+export default Register;

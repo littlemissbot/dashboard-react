@@ -18,45 +18,8 @@ import Grid from "./Grid";
 import SortableItem from "./SortableItem";
 import Item from "./Item";
 
-const DragNDrop = () => {
-  const [items, setItems] = useState([
-    {
-      title: "Total Users",
-      value: 1000,
-      id: "1",
-      width: 6,
-    },
-    {
-      title: "Total Sales",
-      value: 1000,
-      id: "2",
-      width: 6,
-    },
-    {
-      title: "Total Orders",
-      value: 1000,
-      id: "3",
-      width: 12,
-    },
-    {
-      title: "Total Users",
-      value: 1000,
-      id: "4",
-      width: 6,
-    },
-    {
-      title: "Total Sales",
-      value: 1000,
-      id: "5",
-      width: 6,
-    },
-    {
-      title: "Total Orders",
-      value: 1000,
-      id: "6",
-      width: 6,
-    },
-  ]);
+const DragNDrop = (widgets) => {
+  const [items, setItems] = useState(widgets.widgets);
   const [activeId, setActiveId] = useState(null);
   const [activeItem, setActiveItem] = useState(null);
   const sensors = useSensors(useSensor(MouseSensor), useSensor(TouchSensor));

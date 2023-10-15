@@ -1,6 +1,10 @@
 .sider {
   overflow: auto;
   height: 100vh;
+  position: fixed !important;
+  left: 0;
+  top: 0;
+  bottom: 0;
   border-right: 1px solid #e8e8e8;
 }
 .logo {
@@ -15,6 +19,7 @@
 .header {
   padding: 0 2rem;
   border-bottom: 1px solid #e8e8e8;
+  margin-left: 230px;
 }
 .avatarName {
   margin: 0 !important;
@@ -25,5 +30,6 @@
   display: block;
 }
 .content {
-  padding: 0 2rem;
+  padding: 0 2rem 4rem;
+  margin-left: 230px;
 }
