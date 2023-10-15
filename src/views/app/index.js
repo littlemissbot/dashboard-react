@@ -1,5 +1,16 @@
 import React from "react";
-import { UserOutlined, LogoutOutlined, BellOutlined } from "@ant-design/icons";
+import {
+  UserOutlined,
+  LogoutOutlined,
+  BellOutlined,
+  HomeOutlined,
+  SkinOutlined,
+  ShoppingOutlined,
+  CommentOutlined,
+  MailOutlined,
+  CustomerServiceOutlined,
+  SettingOutlined,
+} from "@ant-design/icons";
 import {
   ConfigProvider,
   Layout,
@@ -16,6 +27,17 @@ import styles from "./app.module.css";
 import logo from "../../logo.png";
 
 const { Header, Sider, Content } = Layout;
+const menuItems = [
+  { key: 1, label: "Dashboard", icon: <HomeOutlined /> },
+  { type: "divider" },
+  { key: 2, label: "Products", icon: <SkinOutlined /> },
+  { key: 3, label: "Orders", icon: <ShoppingOutlined /> },
+  { key: 4, label: "Conversation", icon: <CommentOutlined /> },
+  { key: 5, label: "Campaigns", icon: <MailOutlined /> },
+  { type: "divider" },
+  { key: 6, label: "Settings", icon: <SettingOutlined /> },
+  { key: 7, label: "Help Support", icon: <CustomerServiceOutlined /> },
+];
 
 function AppLayout() {
   return (
@@ -38,15 +60,16 @@ function AppLayout() {
             mode="vertical"
             defaultSelectedKeys={["1"]}
             className={styles.menu}
+            items={menuItems}
           >
-            <Menu.Item key="1">Dashboard</Menu.Item>
+            {/* <Menu.Item key="1">Dashboard</Menu.Item>
             <Menu.Item key="2">Products</Menu.Item>
             <Menu.Item key="3">Conversation</Menu.Item>
             <Menu.Item key="4">Campaigns</Menu.Item>
             <Menu.Item key="5">Audience</Menu.Item>
-            <Menu.Item key="5">Statistic</Menu.Item>
-            <Menu.Item key="5">Settings</Menu.Item>
-            <Menu.Item key="5">Help Center</Menu.Item>
+            <Menu.Item key="6">Statistic</Menu.Item>
+            <Menu.Item key="7">Settings</Menu.Item>
+            <Menu.Item key="8">Help Center</Menu.Item> */}
           </Menu>
         </Sider>
         <Layout>

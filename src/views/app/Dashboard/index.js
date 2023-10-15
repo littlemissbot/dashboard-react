@@ -2,7 +2,46 @@ import React from "react";
 import { FileExcelOutlined, FilterOutlined } from "@ant-design/icons";
 import { Space, Typography, Button, Row, Col, Card, Statistic } from "antd";
 
+import DragNDrop from "./DndContext";
 const { Title, Text } = Typography;
+const items = [
+  {
+    title: "Total Users",
+    value: 1000,
+    id: "1",
+    width: 6,
+  },
+  {
+    title: "Total Sales",
+    value: 1000,
+    id: "2",
+    width: 6,
+  },
+  {
+    title: "Total Orders",
+    value: 1000,
+    id: "3",
+    width: 6,
+  },
+  {
+    title: "Total Users",
+    value: 1000,
+    id: "4",
+    width: 6,
+  },
+  {
+    title: "Total Sales",
+    value: 1000,
+    id: "5",
+    width: 6,
+  },
+  {
+    title: "Total Orders",
+    value: 1000,
+    id: "6",
+    width: 6,
+  },
+];
 
 const Dashboard = () => {
   return (
@@ -30,33 +69,7 @@ const Dashboard = () => {
           </Button>
         </Space>
       </Space>
-      <Row gutter={[16, 16]}>
-        <Col span={6}>
-          <Card>
-            <Statistic title="Total Users" value={1000} />
-          </Card>
-        </Col>
-        <Col span={6}>
-          <Card>
-            <Statistic title="Total Sales" value={5000} prefix="$" />
-          </Card>
-        </Col>
-        <Col span={12}>
-          <Card>
-            <Statistic title="Total Orders" value={2000} />
-          </Card>
-        </Col>
-        <Col span={6}>
-          <Card>
-            <Statistic title="Total Orders" value={2000} />
-          </Card>
-        </Col>
-        <Col span={6}>
-          <Card>
-            <Statistic title="Total Revenue" value={10000} prefix="$" />
-          </Card>
-        </Col>
-      </Row>
+      <DragNDrop />
     </div>
   );
 };

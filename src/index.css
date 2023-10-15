@@ -13,3 +13,9 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+/* OVERRIDE ANT DEFAULTS */
+.ant-menu-item-divider {
+  border: 0 !important;
+  padding: 1rem 0 !important;
+}
