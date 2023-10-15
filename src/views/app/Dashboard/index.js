@@ -1,5 +1,6 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 import {
   FileExcelOutlined,
   FilterOutlined,
@@ -7,8 +8,17 @@ import {
   ReloadOutlined,
   ExclamationCircleFilled,
   DeleteOutlined,
+  DownOutlined,
 } from "@ant-design/icons";
-import { Space, Modal, Typography, Button, Divider } from "antd";
+import {
+  Space,
+  Modal,
+  Typography,
+  Button,
+  Divider,
+  Dropdown,
+  Tooltip,
+} from "antd";
 
 import DragNDrop from "../../../components/elements/DndContext";
 import FormDashboard from "../../../components/forms/formDashboard";
@@ -19,6 +29,20 @@ const { confirm } = Modal;
 const Dashboard = () => {
   const dispatch = useDispatch();
   const dashboard = useSelector((state) => state.dashboards.dashboard);
+  const dashboards = useSelector((state) => state.dashboards.dashboards);
+  const items = [
+    ...dashboards.map((dashboard) => ({
+      label: <Link>{dashboard.title}</Link>,
+      key: dashboard.id,
+    })),
+    {
+      type: "divider",
+    },
+    {
+      label: <FormDashboard />,
+      key: "3",
+    },
+  ];
   const showDeleteConfirm = () => {
     confirm({
       title: "Are you sure delete this dashboard?",
@@ -48,24 +72,35 @@ const Dashboard = () => {
         }}
       >
         <div>
-          <Title level={5} style={{ marginBottom: 0 }}>
-            {dashboard.title || "Welcome Back!"}
-          </Title>
+          <Dropdown
+            menu={{
+              items,
+            }}
+            trigger={["click"]}
+          >
+            <Title level={5} style={{ marginBottom: 0 }}>
+              {dashboard.title || "Welcome Back!"} <DownOutlined />
+            </Title>
+          </Dropdown>
           <Text type="secondary">
             {dashboard.description || "Dashboard Overview"}
           </Text>
         </div>
         <Space>
-          <FormDashboard />
-          <Divider type="vertical" />
-          <Button type="default" icon={<EditOutlined />} />
-          <Button type="default" icon={<ReloadOutlined />} />
-          <Button
-            onClick={showDeleteConfirm}
-            type="default"
-            icon={<DeleteOutlined />}
-            disabled={dashboard.id === 1}
-          />
+          <Tooltip title="Edit">
+            <Button type="default" icon={<EditOutlined />} />
+          </Tooltip>
+          <Tooltip title="Reload">
+            <Button type="default" icon={<ReloadOutlined />} />
+          </Tooltip>
+          <Tooltip title="Delete">
+            <Button
+              onClick={showDeleteConfirm}
+              type="default"
+              icon={<DeleteOutlined />}
+              disabled={dashboard.id === 1}
+            />
+          </Tooltip>
           <Divider type="vertical" />
           <Button type="default" icon={<FilterOutlined />}>
             Filter by
