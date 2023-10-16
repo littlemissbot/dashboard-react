@@ -52,7 +52,10 @@ const options = {
 };
 
 const Item = forwardRef(
-  ({ id, withOpacity, isDragging, style, item, listeners, ...props }, ref) => {
+  (
+    { id, withOpacity, isDragging, style, item, locked, listeners, ...props },
+    ref
+  ) => {
     const [itemData, setItemData] = useState(item);
     const inlineStyles = {
       opacity: withOpacity ? "0.5" : "1",
@@ -73,18 +76,18 @@ const Item = forwardRef(
       <Col
         span={itemData.width}
         ref={ref}
-        style={inlineStyles}
+        style={locked ? null : inlineStyles}
         {...props}
         key={itemData.id}
       >
         <Card>
           {/* <Button
-            type="text"
-            danger
-            icon={<DeleteOutlined />}
-            style={{ position: "absolute", right: 0, top: 0 }}
-            onClick={onDeleteItem}
-          /> */}
+          type="text"
+          danger
+          icon={<DeleteOutlined />}
+          style={{ position: "absolute", right: 0, top: 0 }}
+          onClick={onDeleteItem}
+        /> */}
           {itemData.type === "statistic" && (
             <Statistic title={itemData.title} value={itemData.value} />
           )}

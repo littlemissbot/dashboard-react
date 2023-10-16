@@ -179,7 +179,7 @@ const Dashboard = () => {
           {dashboard.widgets.length ? (
             <Row gutter={[30, 30]}>
               {dashboard.widgets.map((widget) => (
-                <Item item={widget} key={widget.id} />
+                <Item item={widget} key={widget.id} locked="true" />
               ))}
             </Row>
           ) : (
