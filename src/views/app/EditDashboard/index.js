@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { SaveOutlined } from "@ant-design/icons";
 import { Space, Typography, Button, Divider, Empty } from "antd";
 
 import DragNDrop from "../../../components/elements/DndContext";
@@ -10,7 +9,6 @@ import FormWidgets from "../../../components/forms/formWidgets";
 const { Title, Text } = Typography;
 
 const EditDashboard = () => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const { id } = useParams();
   const dashboards = useSelector((state) => state.dashboards.dashboards);
@@ -32,7 +30,6 @@ const EditDashboard = () => {
       (dashboard) => dashboard.id === parseInt(id || 1)
     );
     setDashboard(dashboard);
-    console.log(dashboard);
   }, [dashboards]);
 
   return (
@@ -61,17 +58,15 @@ const EditDashboard = () => {
               <Divider type="vertical" />
               <Button
                 type="default"
+                danger
                 onClick={() => navigate("/dashboard/" + dashboard.id)}
               >
-                Cancel
-              </Button>
-              <Button type="primary" icon={<SaveOutlined />}>
-                Save Dashboard
+                Close
               </Button>
             </Space>
           </Space>
           {dashboard.widgets.length ? (
-            <DragNDrop widgets={dashboard.widgets} key={dashboard.widgets} />
+            <DragNDrop dashboard={dashboard} key={dashboard.widgets} />
           ) : (
             <Empty
               style={{

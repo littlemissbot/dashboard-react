@@ -230,7 +230,7 @@ export const dashboardsSlice = createSlice({
                 },
               ],
             },
-            id: "9",
+            id: "7",
             width: 12,
             type: "table",
           },
@@ -253,21 +253,26 @@ export const dashboardsSlice = createSlice({
         (dashboard) => dashboard.id === action.payload.id
       );
       if (index !== -1) {
-        state.dashboards[index] =
-          action.payload.type === "settings"
-            ? { ...state.dashboards[index], ...action.payload.values }
-            : {
-                ...state.dashboards[index],
-                widgets: [
-                  ...state.dashboards[index].widgets,
-                  {
-                    id: (state.dashboards[index].widgets.length + 1).toString(),
-                    ...action.payload.values,
-                  },
-                ],
-              };
+        if (action.payload.type === "widgets") {
+          state.dashboards[index].widgets = action.payload.values;
+        } else {
+          state.dashboards[index] =
+            action.payload.type === "settings"
+              ? { ...state.dashboards[index], ...action.payload.values }
+              : {
+                  ...state.dashboards[index],
+                  widgets: [
+                    ...state.dashboards[index].widgets,
+                    {
+                      id: (
+                        state.dashboards[index].widgets.length + 1
+                      ).toString(),
+                      ...action.payload.values,
+                    },
+                  ],
+                };
+        }
       }
-      console.log(state.dashboards);
     },
     deleteDashboard: (state, action) => {
       const index = state.dashboards.findIndex(

@@ -1,7 +1,17 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { PlusOutlined, SettingOutlined } from "@ant-design/icons";
-import { Button, Col, Drawer, Form, Input, Row, Select, Space } from "antd";
+import {
+  Button,
+  Col,
+  Drawer,
+  Form,
+  Input,
+  Row,
+  Select,
+  Space,
+  message,
+} from "antd";
 import {
   addDashboard,
   editDashboard,
@@ -27,6 +37,9 @@ const FormDashboard = ({ type, formData }) => {
       dispatch(editDashboard({ values, id: formData.id, type: "settings" }));
     } else {
       dispatch(addDashboard(values));
+      message.success(
+        "Dashboard created successfully. Please switch to new dashboard to add widgets."
+      );
     }
     setOpen(false);
   };
@@ -98,16 +111,7 @@ const FormDashboard = ({ type, formData }) => {
           </Row>
           <Row gutter={16}>
             <Col span={12}>
-              <Form.Item
-                name="owner"
-                label="Owner"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please select an owner",
-                  },
-                ]}
-              >
+              <Form.Item name="owner" label="Owner">
                 <Select placeholder="Please select an owner">
                   <Option value="samita">Samita Mondal</Option>
                   <Option value="sushim">Sushim Mukul</Option>
@@ -115,16 +119,7 @@ const FormDashboard = ({ type, formData }) => {
               </Form.Item>
             </Col>
             <Col span={12}>
-              <Form.Item
-                name="type"
-                label="Type"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please choose the type",
-                  },
-                ]}
-              >
+              <Form.Item name="type" label="Type">
                 <Select placeholder="Please choose the type">
                   <Option value="private">Private</Option>
                   <Option value="public">Public</Option>

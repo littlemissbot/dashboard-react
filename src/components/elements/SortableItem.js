@@ -21,7 +21,6 @@ const SortableItem = (props) => {
 
   useEffect(() => {
     setItem(props.item);
-    console.log(props);
   }, [props.item]);
 
   return (

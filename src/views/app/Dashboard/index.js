@@ -19,7 +19,6 @@ import {
   Tooltip,
   Empty,
   Row,
-  Col,
 } from "antd";
 
 import FormDashboard from "../../../components/forms/formDashboard";
@@ -59,9 +58,6 @@ const Dashboard = () => {
       onOk() {
         dispatch(deleteDashboard(dashboard.id));
       },
-      onCancel() {
-        console.log("Cancel");
-      },
     });
   };
   const onEditDashboard = () => {
@@ -78,6 +74,13 @@ const Dashboard = () => {
       navigate("/404");
     }
   }, [id]);
+
+  useEffect(() => {
+    const dashboard = dashboards.find(
+      (dashboard) => dashboard.id === parseInt(id || 1)
+    );
+    setDashboard(dashboard);
+  }, [dashboards]);
 
   return (
     <>
@@ -134,7 +137,7 @@ const Dashboard = () => {
           {dashboard.widgets.length ? (
             <Row gutter={[30, 30]}>
               {dashboard.widgets.map((widget) => (
-                <Item item={widget} key={widget.title} />
+                <Item item={widget} key={widget.id} />
               ))}
             </Row>
           ) : (
