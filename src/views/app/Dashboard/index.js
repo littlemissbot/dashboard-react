@@ -5,7 +5,6 @@ import {
   FileExcelOutlined,
   FilterOutlined,
   EditOutlined,
-  ReloadOutlined,
   ExclamationCircleFilled,
   DeleteOutlined,
   DownOutlined,
@@ -19,11 +18,13 @@ import {
   Dropdown,
   Tooltip,
   Empty,
+  Row,
+  Col,
 } from "antd";
 
-import DragNDrop from "../../../components/elements/DndContext";
 import FormDashboard from "../../../components/forms/formDashboard";
 import { deleteDashboard } from "../../../redux/slices/dashboardsSlice";
+import Item from "../../../components/elements/Item";
 const { Title, Text } = Typography;
 const { confirm } = Modal;
 
@@ -68,9 +69,14 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    setDashboard(
-      dashboards.find((dashboard) => dashboard.id === parseInt(id || 1))
+    const dashboard = dashboards.find(
+      (dashboard) => dashboard.id === parseInt(id || 1)
     );
+    if (dashboard) {
+      setDashboard(dashboard);
+    } else {
+      navigate("/404");
+    }
   }, [id]);
 
   return (
@@ -108,9 +114,6 @@ const Dashboard = () => {
                   onClick={onEditDashboard}
                 />
               </Tooltip>
-              <Tooltip title="Reload">
-                <Button type="default" icon={<ReloadOutlined />} />
-              </Tooltip>
               <Tooltip title="Delete">
                 <Button
                   onClick={showDeleteConfirm}
@@ -129,7 +132,11 @@ const Dashboard = () => {
             </Space>
           </Space>
           {dashboard.widgets.length ? (
-            <DragNDrop widgets={dashboard.widgets} />
+            <Row gutter={[30, 30]}>
+              {dashboard.widgets.map((widget) => (
+                <Item item={widget} key={widget.title} />
+              ))}
+            </Row>
           ) : (
             <Empty
               style={{

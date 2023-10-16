@@ -1,8 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { PlusOutlined, SettingOutlined } from "@ant-design/icons";
 import { Button, Col, Drawer, Form, Input, Row, Select, Space } from "antd";
-import { addDashboard } from "../../redux/slices/dashboardsSlice";
+import {
+  addDashboard,
+  editDashboard,
+} from "../../redux/slices/dashboardsSlice";
 
 const { Option } = Select;
 
@@ -10,16 +13,18 @@ const FormDashboard = ({ type, formData }) => {
   const [open, setOpen] = useState(false);
   const [form] = Form.useForm();
   const dispatch = useDispatch();
+
   const showDrawer = () => {
     setOpen(true);
   };
+
   const onClose = () => {
     setOpen(false);
   };
+
   const onSubmit = (values) => {
-    console.log(values);
     if (type === "edit") {
-      // dispatch(editDashboard(values));
+      dispatch(editDashboard({ values, id: formData.id, type: "settings" }));
     } else {
       dispatch(addDashboard(values));
     }
@@ -33,7 +38,7 @@ const FormDashboard = ({ type, formData }) => {
         onClick={showDrawer}
         icon={type === "edit" ? <SettingOutlined /> : <PlusOutlined />}
       >
-        {type === "edit" ? "Settings" : "New dashboard"}
+        {type === "edit" ? null : "New dashboard"}
       </Button>
       <Drawer
         title={type === "edit" ? "Settings" : "Create a new dashboard"}

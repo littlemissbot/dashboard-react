@@ -1,5 +1,5 @@
-import React, { useState, useCallback } from "react";
-
+import React, { useEffect, useState, useCallback } from "react";
+import { Row } from "antd";
 import {
   DndContext,
   closestCenter,
@@ -14,7 +14,6 @@ import {
   SortableContext,
   rectSortingStrategy,
 } from "@dnd-kit/sortable";
-import Grid from "./Grid";
 import SortableItem from "./SortableItem";
 import Item from "./Item";
 
@@ -32,7 +31,7 @@ const DragNDrop = (widgets) => {
 
   const handleDragEnd = useCallback((event) => {
     const { active, over } = event;
-    if (active.id !== over?.id) {
+    if (over && active.id !== over.id) {
       setItems((items) => {
         const oldIndex = items.findIndex((item) => item.id === active.id);
         const newIndex = items.findIndex((item) => item.id === over.id);
@@ -49,6 +48,10 @@ const DragNDrop = (widgets) => {
     setActiveItem(null);
   }, []);
 
+  useEffect(() => {
+    setItems(widgets.widgets);
+  }, [widgets.widgets]);
+
   return (
     <div>
       <DndContext
@@ -59,11 +62,17 @@ const DragNDrop = (widgets) => {
         onDragCancel={handleDragCancel}
       >
         <SortableContext items={items} strategy={rectSortingStrategy}>
-          <Grid columns={5}>
+          <Row gutter={[30, 30]}>
             {items.map((item) => (
-              <SortableItem key={item.id} id={item.id} item={item} />
+              <SortableItem
+                key={item.id}
+                id={item.id}
+                item={item}
+                removable="true"
+                handle="true"
+              />
             ))}
-          </Grid>
+          </Row>
         </SortableContext>
         <DragOverlay adjustScale style={{ transformOrigin: "0 0 " }}>
           {activeId ? (

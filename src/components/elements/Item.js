@@ -1,7 +1,9 @@
-import React, { forwardRef } from "react";
-import { Col, Card, Statistic, Table } from "antd";
+import React, { useState, forwardRef, useEffect } from "react";
+import { DeleteOutlined } from "@ant-design/icons";
+import { Col, Card, Statistic, Table, Typography, Button } from "antd";
 import { Bar, Line } from "react-chartjs-2";
 
+const { Text } = Typography;
 const options = {
   responsive: true,
   aspectRatio: 2,
@@ -51,6 +53,7 @@ const options = {
 
 const Item = forwardRef(
   ({ id, withOpacity, isDragging, style, item, listeners, ...props }, ref) => {
+    const [itemData, setItemData] = useState(item);
     const inlineStyles = {
       opacity: withOpacity ? "0.5" : "1",
       transformOrigin: "50% 50%",
@@ -58,41 +61,63 @@ const Item = forwardRef(
       transform: isDragging ? "scale(1.05)" : "scale(1)",
       ...style,
     };
+    const onDeleteItem = () => {
+      console.log("Delete item", itemData.id);
+    };
+
+    useEffect(() => {
+      setItemData(item);
+    }, [item]);
 
     return (
-      <Col span={item.width} ref={ref} style={inlineStyles} {...props}>
+      <Col
+        span={itemData.width}
+        ref={ref}
+        style={inlineStyles}
+        {...props}
+        key={itemData.id}
+      >
         <Card>
-          {item.type === "statistic" && (
-            <Statistic title={item.title} value={item.value} />
+          {/* <Button
+            type="text"
+            danger
+            icon={<DeleteOutlined />}
+            style={{ position: "absolute", right: 0, top: 0 }}
+            onClick={onDeleteItem}
+          /> */}
+          {itemData.type === "statistic" && (
+            <Statistic title={itemData.title} value={itemData.value} />
           )}
-          {item.type === "table" && (
+          {itemData.type === "table" && (
             <Table
-              dataSource={item.value.dataSource}
-              columns={item.value.columns}
+              dataSource={itemData.value.dataSource}
+              columns={itemData.value.columns}
+              pagination={false}
+              title={() => <Text type="secondary">{itemData.title}</Text>}
             />
           )}
-          {item.type === "bar" && (
+          {itemData.type === "bar" && (
             <Bar
               options={{
                 ...options,
                 plugins: {
                   ...options.plugins,
-                  title: { ...options.plugins.title, text: item.title },
+                  title: { ...options.plugins.title, text: itemData.title },
                 },
               }}
-              data={item.value}
+              data={itemData.value}
             />
           )}
-          {item.type === "line" && (
+          {itemData.type === "line" && (
             <Line
               options={{
                 ...options,
                 plugins: {
                   ...options.plugins,
-                  title: { ...options.plugins.title, text: item.title },
+                  title: { ...options.plugins.title, text: itemData.title },
                 },
               }}
-              data={item.value}
+              data={itemData.value}
             />
           )}
         </Card>

@@ -19,3 +19,7 @@ code {
   border: 0 !important;
   padding: 1rem 0 !important;
 }
+.ant-table-title {
+  padding-top: 0 !important;
+  padding-left: 0 !important;
+}
