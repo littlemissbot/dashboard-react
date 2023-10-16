@@ -50,7 +50,7 @@ function AppLayout() {
     }
   };
   const onLogout = () => {
-    localStorage.removeItem("user");
+    localStorage.clear();
     navigate("/");
   };
 

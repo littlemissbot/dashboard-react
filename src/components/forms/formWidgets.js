@@ -43,6 +43,7 @@ const FormWidgets = ({ formData }) => {
 
   const onSubmit = (values) => {
     dispatch(editDashboard({ values, id: formData.id }));
+    form.resetFields();
     setChildrenDrawer(false);
     setOpen(false);
   };

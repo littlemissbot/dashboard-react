@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
@@ -19,6 +19,7 @@ import {
   Tooltip,
   Empty,
   Row,
+  Tour,
 } from "antd";
 
 import FormDashboard from "../../../components/forms/formDashboard";
@@ -46,6 +47,30 @@ const Dashboard = () => {
       key: "3",
     },
   ];
+  const [open, setOpen] = useState(false);
+
+  const ref1 = useRef(null);
+  const ref2 = useRef(null);
+  const ref3 = useRef(null);
+  const steps = [
+    {
+      title: "Switch Dashboard",
+      description: "Click to switch to another dashboard or create a new one.",
+      target: () => ref1.current,
+    },
+    {
+      title: "Edit",
+      description: "Click to edit this dashboard.",
+      target: () => ref2.current,
+    },
+    {
+      title: "Delete",
+      description:
+        "Click to delete this dashboard. Default dashboard cannot be deleted.",
+      target: () => ref3.current,
+    },
+  ];
+
   const showDeleteConfirm = () => {
     confirm({
       title: "Are you sure delete this dashboard?",
@@ -56,12 +81,19 @@ const Dashboard = () => {
       okType: "danger",
       cancelText: "No",
       onOk() {
-        dispatch(deleteDashboard(dashboard.id));
+        dispatch(deleteDashboard({ id: dashboard.id }));
+        navigate("/dashboard");
       },
     });
   };
+
   const onEditDashboard = () => {
     navigate("/dashboard/" + (dashboard.id || 1) + "/edit");
+  };
+
+  const onTourFinish = () => {
+    setOpen(false);
+    localStorage.setItem("tour", "true");
   };
 
   useEffect(() => {
@@ -101,7 +133,7 @@ const Dashboard = () => {
                 }}
                 trigger={["click"]}
               >
-                <Title level={5} style={{ marginBottom: 0 }}>
+                <Title level={5} style={{ marginBottom: 0 }} ref={ref1}>
                   {dashboard.title || "Welcome Back!"} <DownOutlined />
                 </Title>
               </Dropdown>
@@ -110,11 +142,20 @@ const Dashboard = () => {
               </Text>
             </div>
             <Space>
+              {localStorage.getItem("tour") ? null : (
+                <>
+                  <Button type="primary" onClick={() => setOpen(true)}>
+                    Begin Tour
+                  </Button>
+                  <Divider type="vertical" />
+                </>
+              )}
               <Tooltip title="Edit">
                 <Button
                   type="default"
                   icon={<EditOutlined />}
                   onClick={onEditDashboard}
+                  ref={ref2}
                 />
               </Tooltip>
               <Tooltip title="Delete">
@@ -123,6 +164,7 @@ const Dashboard = () => {
                   type="default"
                   icon={<DeleteOutlined />}
                   disabled={dashboard.id === 1}
+                  ref={ref3}
                 />
               </Tooltip>
               <Divider type="vertical" />
@@ -150,6 +192,7 @@ const Dashboard = () => {
               }}
             />
           )}
+          <Tour open={open} onClose={onTourFinish} steps={steps} />
         </div>
       )}
     </>

@@ -58,12 +58,12 @@ export const dashboardsSlice = createSlice({
             type: "dropdown",
             values: [
               {
-                label: "6x4",
-                value: 6,
+                label: "12x4",
+                value: 12,
               },
               {
-                label: "12x6",
-                value: 12,
+                label: "18x6",
+                value: 18,
               },
             ],
           },
@@ -113,7 +113,7 @@ export const dashboardsSlice = createSlice({
           {
             key: "type",
             label: "Type",
-            type: "text",
+            type: "dropdown",
             values: [
               {
                 label: "Table",
@@ -125,7 +125,65 @@ export const dashboardsSlice = createSlice({
         id: "2",
       },
     ],
-    dashboards: [
+    sample: {
+      bar: {
+        labels: ["Jan", "Feb", "Mar", "Apr", "May"],
+        datasets: [
+          {
+            label: "2023",
+            data: [100, 250, 650, 450, 325],
+            backgroundColor: "#722ed1",
+          },
+          {
+            label: "2022",
+            data: [500, 750, 1000, 250, 125],
+            backgroundColor: "#d3adf7",
+          },
+        ],
+      },
+      line: {
+        labels: ["Jan", "Feb", "Mar", "Apr", "May"],
+        datasets: [
+          {
+            label: "2023",
+            data: [100, 250, 650, 450, 325],
+            backgroundColor: "#722ed1",
+          },
+          {
+            label: "2022",
+            data: [500, 750, 1000, 250, 125],
+            backgroundColor: "#d3adf7",
+          },
+        ],
+      },
+      table: {
+        columns: [
+          {
+            title: "Name",
+            dataIndex: "name",
+            key: "name",
+          },
+          {
+            title: "Address",
+            dataIndex: "address",
+            key: "address",
+          },
+        ],
+        dataSource: [
+          {
+            key: "1",
+            name: "Mike",
+            address: "10 Downing Street, NY 21332",
+          },
+          {
+            key: "2",
+            name: "John",
+            address: "10 Downing Street, NY 21332",
+          },
+        ],
+      },
+    },
+    dashboards: JSON.parse(localStorage.getItem("dashboards")) || [
       {
         id: 1,
         title: "Default",
@@ -247,6 +305,7 @@ export const dashboardsSlice = createSlice({
         ...state.dashboards,
         { ...action.payload, id: state.dashboards.length + 1, widgets: [] },
       ];
+      localStorage.setItem("dashboards", JSON.stringify(state.dashboards));
     },
     editDashboard: (state, action) => {
       const index = state.dashboards.findIndex(
@@ -268,10 +327,15 @@ export const dashboardsSlice = createSlice({
                         state.dashboards[index].widgets.length + 1
                       ).toString(),
                       ...action.payload.values,
+                      value:
+                        action.payload.values.value === "sample"
+                          ? state.sample[action.payload.values.type]
+                          : action.payload.values.value,
                     },
                   ],
                 };
         }
+        localStorage.setItem("dashboards", JSON.stringify(state.dashboards));
       }
     },
     deleteDashboard: (state, action) => {
@@ -283,6 +347,7 @@ export const dashboardsSlice = createSlice({
           ...state.dashboards.slice(0, index),
           ...state.dashboards.slice(index + 1),
         ];
+        localStorage.setItem("dashboards", JSON.stringify(state.dashboards));
       }
     },
   },

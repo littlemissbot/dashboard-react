@@ -41,6 +41,7 @@ const FormDashboard = ({ type, formData }) => {
         "Dashboard created successfully. Please switch to new dashboard to add widgets."
       );
     }
+    form.resetFields();
     setOpen(false);
   };
 
