@@ -13,6 +13,9 @@ import Register from "../views/auth/Register";
  */
 import AppLayout from "../views/app";
 import Dashboard from "../views/app/Dashboard";
+import EditDashboard from "../views/app/EditDashboard";
+
+import NotFound from "../views/misc/NotFound";
 
 /**
  * An array of private routes that require authentication to access.
@@ -31,12 +34,20 @@ const privateRoutes = [
          * The path of the private route.
          * @type {string}
          */
-        path: "/app",
+        path: "/dashboard",
         /**
          * The child element of the private route.
          * @type {React.Component}
          */
         element: <Dashboard />,
+      },
+      {
+        path: "/dashboard/:id",
+        element: <Dashboard />,
+      },
+      {
+        path: "/dashboard/:id/edit",
+        element: <EditDashboard />,
       },
     ],
   },
@@ -71,6 +82,10 @@ const publicRoutes = [
         element: <Register />,
       },
     ],
+  },
+  {
+    path: "*",
+    element: <NotFound />,
   },
 ];
 

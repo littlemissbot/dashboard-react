@@ -12,13 +12,13 @@ const Login = () => {
   const onSubmit = (values) => {
     setLoading(true);
     localStorage.setItem("user", JSON.stringify(values));
-    navigate("/app");
+    navigate("/dashboard");
   };
 
   useEffect(() => {
     const user = localStorage.getItem("user");
     if (user) {
-      navigate("/app");
+      navigate("/dashboard");
     }
   }, []);
 

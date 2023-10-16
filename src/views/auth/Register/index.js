@@ -1,16 +1,17 @@
 import React, { useState } from "react";
 import { Form, Input, Button, Typography } from "antd";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const { Text } = Typography;
 
 const Register = () => {
   const [isLoading, setLoading] = useState(false);
   const [form] = Form.useForm();
+  const navigate = useNavigate();
 
   const onSubmit = (values) => {
     setLoading(true);
-    // TODO: Call API to submit form
+    navigate("/");
   };
 
   return (

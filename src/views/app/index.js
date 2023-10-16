@@ -28,7 +28,7 @@ import logo from "../../logo.png";
 
 const { Header, Sider, Content } = Layout;
 const menuItems = [
-  { key: 1, label: "Dashboard", icon: <HomeOutlined /> },
+  { key: 1, label: "Dashboard", icon: <HomeOutlined />, path: "/dashboard" },
   { type: "divider" },
   { key: 2, label: "Products", icon: <SkinOutlined /> },
   { key: 3, label: "Orders", icon: <ShoppingOutlined /> },
@@ -41,11 +41,23 @@ const menuItems = [
 
 function AppLayout() {
   const navigate = useNavigate();
+  const onMenuClick = (item) => {
+    const menuItem = menuItems.find(
+      (menuItem) => menuItem.key === parseInt(item.key)
+    );
+    if (menuItem.path) {
+      navigate(menuItem.path);
+    }
+  };
+  const onLogout = () => {
+    localStorage.removeItem("user");
+    navigate("/");
+  };
 
   useEffect(() => {
     const user = localStorage.getItem("user");
     if (!user) {
-      navigate("/login");
+      navigate("/");
     }
   }, []);
 
@@ -70,6 +82,7 @@ function AppLayout() {
             defaultSelectedKeys={["1"]}
             className={styles.menu}
             items={menuItems}
+            onClick={onMenuClick}
           >
             {/* <Menu.Item key="1">Dashboard</Menu.Item>
             <Menu.Item key="2">Products</Menu.Item>
@@ -86,7 +99,11 @@ function AppLayout() {
             <Space>
               <Button type="text" icon={<BellOutlined />}></Button>
               <Button type="text" icon={<UserOutlined />}></Button>
-              <Button type="text" icon={<LogoutOutlined />}></Button>
+              <Button
+                type="text"
+                icon={<LogoutOutlined />}
+                onClick={onLogout}
+              ></Button>
               {/* <Dropdown menu={{ items }} placement="bottomRight">
                 <Space align="center">
                   <Avatar
