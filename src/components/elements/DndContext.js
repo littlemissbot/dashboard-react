@@ -76,6 +76,7 @@ const DragNDrop = ({ dashboard }) => {
               <SortableItem
                 key={item.id}
                 id={item.id}
+                dashboardId={dashboard.id}
                 item={item}
                 removable="true"
                 handle="true"

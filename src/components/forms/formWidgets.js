@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { AppstoreAddOutlined } from "@ant-design/icons";
+import { EditOutlined, AppstoreAddOutlined } from "@ant-design/icons";
 import {
   Space,
   Row,
@@ -12,11 +12,11 @@ import {
   Input,
   Select,
 } from "antd";
-import { editDashboard } from "../../redux/slices/dashboardsSlice";
+import { editDashboard, editWidget } from "../../redux/slices/dashboardsSlice";
 
 const { Meta } = Card;
 
-const FormWidgets = ({ formData }) => {
+const FormWidgets = ({ type, formData, dashboardId }) => {
   const [open, setOpen] = useState(false);
   const [childrenDrawer, setChildrenDrawer] = useState(false);
   const [widget, setWidget] = useState(null);
@@ -26,6 +26,11 @@ const FormWidgets = ({ formData }) => {
 
   const showDrawer = () => {
     setOpen(true);
+    if (type === "edit") {
+      const w = widgets.find((widget) => widget.id === formData.widgetId);
+      setWidget(w);
+      setChildrenDrawer(true);
+    }
   };
 
   const onClose = () => {
@@ -42,7 +47,18 @@ const FormWidgets = ({ formData }) => {
   };
 
   const onSubmit = (values) => {
-    dispatch(editDashboard({ values, id: formData.id }));
+    if (type === "edit") {
+      dispatch(
+        editWidget({
+          values,
+          id: formData.id,
+          dashboardId: dashboardId,
+          widgetId: widget.id,
+        })
+      );
+    } else {
+      dispatch(editDashboard({ values, id: formData.id }));
+    }
     form.resetFields();
     setChildrenDrawer(false);
     setOpen(false);
@@ -51,8 +67,9 @@ const FormWidgets = ({ formData }) => {
   return (
     <>
       <Button
-        type="default"
-        icon={<AppstoreAddOutlined />}
+        size={type === "edit" ? "small" : "default"}
+        type={type === "edit" ? "text" : "default"}
+        icon={type === "edit" ? <EditOutlined /> : <AppstoreAddOutlined />}
         onClick={showDrawer}
       ></Button>
       <Drawer
@@ -95,7 +112,23 @@ const FormWidgets = ({ formData }) => {
             </Space>
           }
         >
-          <Form form={form} layout="vertical" requiredMark onFinish={onSubmit}>
+          <Form
+            form={form}
+            initialValues={
+              type === "edit"
+                ? {
+                    ...formData,
+                    value:
+                      typeof formData.value === "object"
+                        ? "sample"
+                        : formData.value,
+                  }
+                : {}
+            }
+            layout="vertical"
+            requiredMark
+            onFinish={onSubmit}
+          >
             {widget &&
               widget.fields.map((field) => (
                 <Form.Item

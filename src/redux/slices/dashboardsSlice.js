@@ -196,6 +196,7 @@ export const dashboardsSlice = createSlice({
             id: "1",
             width: 6,
             type: "statistic",
+            widgetId: "1",
           },
           {
             title: "Total Sales",
@@ -203,6 +204,7 @@ export const dashboardsSlice = createSlice({
             id: "2",
             width: 6,
             type: "statistic",
+            widgetId: "1",
           },
           {
             title: "Total Users",
@@ -210,6 +212,7 @@ export const dashboardsSlice = createSlice({
             id: "3",
             width: 6,
             type: "statistic",
+            widgetId: "1",
           },
           {
             title: "Total Sales",
@@ -217,6 +220,7 @@ export const dashboardsSlice = createSlice({
             id: "4",
             width: 6,
             type: "statistic",
+            widgetId: "1",
           },
           {
             title: "Total Orders",
@@ -238,6 +242,7 @@ export const dashboardsSlice = createSlice({
             id: "5",
             width: 12,
             type: "bar",
+            widgetId: "2",
           },
           {
             title: "Total Orders",
@@ -259,6 +264,7 @@ export const dashboardsSlice = createSlice({
             id: "6",
             width: 12,
             type: "line",
+            widgetId: "2",
           },
           {
             title: "Latest Orders",
@@ -291,6 +297,7 @@ export const dashboardsSlice = createSlice({
             id: "7",
             width: 12,
             type: "table",
+            widgetId: "3",
           },
         ],
       },
@@ -323,6 +330,7 @@ export const dashboardsSlice = createSlice({
                   widgets: [
                     ...state.dashboards[index].widgets,
                     {
+                      widgetId: action.payload.values.widgetId,
                       id: (
                         state.dashboards[index].widgets.length + 1
                       ).toString(),
@@ -350,10 +358,48 @@ export const dashboardsSlice = createSlice({
         localStorage.setItem("dashboards", JSON.stringify(state.dashboards));
       }
     },
+    editWidget: (state, action) => {
+      console.log(action.payload);
+      const dashboardIndex = state.dashboards.findIndex(
+        (dashboard) => dashboard.id === action.payload.dashboardId
+      );
+      const widgetIndex = state.dashboards[dashboardIndex].widgets.findIndex(
+        (widget) => widget.id === action.payload.id
+      );
+      if (widgetIndex !== -1) {
+        state.dashboards[dashboardIndex].widgets[widgetIndex] = {
+          ...state.dashboards[dashboardIndex].widgets[widgetIndex],
+          ...action.payload.values,
+          value:
+            action.payload.values.value === "sample"
+              ? state.sample[action.payload.values.type]
+              : action.payload.values.value,
+        };
+        localStorage.setItem("dashboards", JSON.stringify(state.dashboards));
+      }
+    },
+    deleteWidget: (state, action) => {
+      const dashboardIndex = state.dashboards.findIndex(
+        (dashboard) => dashboard.id === action.payload.dashboardId
+      );
+      const widgetIndex = state.dashboards[dashboardIndex].widgets.findIndex(
+        (widget) => widget.id === action.payload.id
+      );
+      if (widgetIndex !== -1) {
+        state.dashboards[dashboardIndex].widgets.splice(widgetIndex, 1);
+        localStorage.setItem("dashboards", JSON.stringify(state.dashboards));
+      }
+    },
   },
 });
 
-export const { dashboards, addDashboard, editDashboard, deleteDashboard } =
-  dashboardsSlice.actions;
+export const {
+  dashboards,
+  addDashboard,
+  editDashboard,
+  deleteDashboard,
+  editWidget,
+  deleteWidget,
+} = dashboardsSlice.actions;
 
 export default dashboardsSlice.reducer;

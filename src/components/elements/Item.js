@@ -1,9 +1,27 @@
 import React, { useState, forwardRef, useEffect } from "react";
-import { DeleteOutlined, DragOutlined } from "@ant-design/icons";
-import { Col, Card, Statistic, Table, Typography, Button } from "antd";
+import { useDispatch } from "react-redux";
+import {
+  DeleteOutlined,
+  DragOutlined,
+  EditOutlined,
+  ExclamationCircleFilled,
+} from "@ant-design/icons";
+import {
+  Space,
+  Col,
+  Card,
+  Statistic,
+  Table,
+  Typography,
+  Button,
+  Modal,
+} from "antd";
 import { Bar, Line } from "react-chartjs-2";
 
+import FormWidgets from "../forms/formWidgets";
+import { deleteWidget } from "../../redux/slices/dashboardsSlice";
 const { Text } = Typography;
+const { confirm } = Modal;
 const options = {
   responsive: true,
   aspectRatio: 2,
@@ -53,7 +71,17 @@ const options = {
 
 const Item = forwardRef(
   (
-    { id, withOpacity, isDragging, style, item, locked, listeners, ...props },
+    {
+      id,
+      withOpacity,
+      isDragging,
+      style,
+      item,
+      dashboardId,
+      locked,
+      listeners,
+      ...props
+    },
     ref
   ) => {
     const [itemData, setItemData] = useState(item);
@@ -64,8 +92,22 @@ const Item = forwardRef(
       transform: isDragging ? "scale(1.05)" : "scale(1)",
       ...style,
     };
+    const dispatch = useDispatch();
+
     const onDeleteItem = () => {
-      console.log("Delete item", itemData.id);
+      confirm({
+        title: "Are you sure delete this dashboard?",
+        icon: <ExclamationCircleFilled />,
+        content:
+          "This dashboard will be deleted permanently and cannot be recovered.",
+        okText: "Yes",
+        okType: "danger",
+        cancelText: "No",
+        onOk() {
+          console.log(dashboardId);
+          dispatch(deleteWidget({ id: item.id, dashboardId }));
+        },
+      });
     };
 
     useEffect(() => {
@@ -81,26 +123,29 @@ const Item = forwardRef(
       >
         <Card>
           {!locked && (
-            <>
+            <Space style={{ position: "absolute", right: 5, top: 5 }}>
               <Button
+                size="small"
                 type="text"
                 style={{
-                  position: "absolute",
-                  right: 40,
-                  top: 5,
                   cursor: isDragging ? "grabbing" : "grab",
                 }}
                 {...props}
                 icon={<DragOutlined />}
               />
+              <FormWidgets
+                type="edit"
+                formData={itemData}
+                dashboardId={dashboardId}
+              />
               <Button
+                size="small"
                 type="text"
                 danger
                 icon={<DeleteOutlined />}
-                style={{ position: "absolute", right: 5, top: 5 }}
                 onClick={onDeleteItem}
               />
-            </>
+            </Space>
           )}
           {itemData.type === "statistic" && (
             <Statistic title={itemData.title} value={itemData.value} />
