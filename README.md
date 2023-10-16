@@ -2,7 +2,10 @@
 
 Develop a dashboard application that allows users to create and manage multiple landing pages. The application should utilize client-side routing to navigate between different sections.
 
----
+### Pending items
+
+- Edit widget content from one dashboard
+- Delete a widget from one dashboard
 
 ### Features
 
