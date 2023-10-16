@@ -1,5 +1,5 @@
 import React, { useState, forwardRef, useEffect } from "react";
-import { DeleteOutlined } from "@ant-design/icons";
+import { DeleteOutlined, DragOutlined } from "@ant-design/icons";
 import { Col, Card, Statistic, Table, Typography, Button } from "antd";
 import { Bar, Line } from "react-chartjs-2";
 
@@ -60,7 +60,7 @@ const Item = forwardRef(
     const inlineStyles = {
       opacity: withOpacity ? "0.5" : "1",
       transformOrigin: "50% 50%",
-      cursor: isDragging ? "grabbing" : "grab",
+
       transform: isDragging ? "scale(1.05)" : "scale(1)",
       ...style,
     };
@@ -77,17 +77,31 @@ const Item = forwardRef(
         span={itemData.width}
         ref={ref}
         style={locked ? null : inlineStyles}
-        {...props}
         key={itemData.id}
       >
         <Card>
-          {/* <Button
-          type="text"
-          danger
-          icon={<DeleteOutlined />}
-          style={{ position: "absolute", right: 0, top: 0 }}
-          onClick={onDeleteItem}
-        /> */}
+          {!locked && (
+            <>
+              <Button
+                type="text"
+                style={{
+                  position: "absolute",
+                  right: 40,
+                  top: 5,
+                  cursor: isDragging ? "grabbing" : "grab",
+                }}
+                {...props}
+                icon={<DragOutlined />}
+              />
+              <Button
+                type="text"
+                danger
+                icon={<DeleteOutlined />}
+                style={{ position: "absolute", right: 5, top: 5 }}
+                onClick={onDeleteItem}
+              />
+            </>
+          )}
           {itemData.type === "statistic" && (
             <Statistic title={itemData.title} value={itemData.value} />
           )}
