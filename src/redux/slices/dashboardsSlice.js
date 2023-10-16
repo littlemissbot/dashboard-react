@@ -277,7 +277,18 @@ export const dashboardsSlice = createSlice({
     },
     addDashboard: (state, action) => {
       console.log(action);
-      state.dashboards = [...state.dashboards, action.payload];
+      state.dashboards = [
+        ...state.dashboards,
+        { ...action.payload, id: state.dashboards.length + 1, widgets: [] },
+      ];
+    },
+    editDashboard: (state, action) => {
+      const index = state.dashboards.findIndex(
+        (dashboard) => dashboard.id === action.payload.id
+      );
+      if (index !== -1) {
+        state.dashboards[index] = action.payload;
+      }
     },
     deleteDashboard: (state, action) => {
       const index = state.dashboards.findIndex(

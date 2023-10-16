@@ -1,22 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { PlusOutlined } from "@ant-design/icons";
-import {
-  Button,
-  Col,
-  DatePicker,
-  Drawer,
-  Form,
-  Input,
-  Row,
-  Select,
-  Space,
-} from "antd";
+import { PlusOutlined, SettingOutlined } from "@ant-design/icons";
+import { Button, Col, Drawer, Form, Input, Row, Select, Space } from "antd";
 import { addDashboard } from "../../redux/slices/dashboardsSlice";
 
 const { Option } = Select;
 
-const FormDashboard = () => {
+const FormDashboard = ({ type, formData }) => {
   const [open, setOpen] = useState(false);
   const [form] = Form.useForm();
   const dispatch = useDispatch();
@@ -28,16 +18,25 @@ const FormDashboard = () => {
   };
   const onSubmit = (values) => {
     console.log(values);
-    dispatch(addDashboard(values));
+    if (type === "edit") {
+      // dispatch(editDashboard(values));
+    } else {
+      dispatch(addDashboard(values));
+    }
     setOpen(false);
   };
+
   return (
     <>
-      <Button type="primary" onClick={showDrawer} icon={<PlusOutlined />}>
-        New dashboard
+      <Button
+        type={type === "edit" ? "default" : "primary"}
+        onClick={showDrawer}
+        icon={type === "edit" ? <SettingOutlined /> : <PlusOutlined />}
+      >
+        {type === "edit" ? "Settings" : "New dashboard"}
       </Button>
       <Drawer
-        title="Create a new dashboard"
+        title={type === "edit" ? "Settings" : "Create a new dashboard"}
         width={720}
         onClose={onClose}
         open={open}
@@ -50,12 +49,18 @@ const FormDashboard = () => {
           <Space>
             <Button onClick={onClose}>Cancel</Button>
             <Button type="primary" onClick={form.submit}>
-              Create
+              {type === "edit" ? "Save" : "Create"}
             </Button>
           </Space>
         }
       >
-        <Form form={form} layout="vertical" requiredMark onFinish={onSubmit}>
+        <Form
+          form={form}
+          layout="vertical"
+          initialValues={{ ...formData }}
+          requiredMark
+          onFinish={onSubmit}
+        >
           <Row gutter={16}>
             <Col span={12}>
               <Form.Item

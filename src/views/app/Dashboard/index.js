@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   FileExcelOutlined,
   FilterOutlined,
@@ -18,6 +18,7 @@ import {
   Divider,
   Dropdown,
   Tooltip,
+  Empty,
 } from "antd";
 
 import DragNDrop from "../../../components/elements/DndContext";
@@ -28,11 +29,13 @@ const { confirm } = Modal;
 
 const Dashboard = () => {
   const dispatch = useDispatch();
-  const dashboard = useSelector((state) => state.dashboards.dashboard);
+  const navigate = useNavigate();
+  const { id } = useParams();
   const dashboards = useSelector((state) => state.dashboards.dashboards);
+  const [dashboard, setDashboard] = useState(null);
   const items = [
     ...dashboards.map((dashboard) => ({
-      label: <Link>{dashboard.title}</Link>,
+      label: <Link to={"/dashboard/" + dashboard.id}>{dashboard.title}</Link>,
       key: dashboard.id,
     })),
     {
@@ -60,58 +63,86 @@ const Dashboard = () => {
       },
     });
   };
+  const onEditDashboard = () => {
+    navigate("/dashboard/" + (dashboard.id || 1) + "/edit");
+  };
+
+  useEffect(() => {
+    setDashboard(
+      dashboards.find((dashboard) => dashboard.id === parseInt(id || 1))
+    );
+  }, [id]);
 
   return (
-    <div>
-      <Space
-        align="end"
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          marginBottom: "1rem",
-        }}
-      >
+    <>
+      {dashboard && (
         <div>
-          <Dropdown
-            menu={{
-              items,
+          <Space
+            align="end"
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              marginBottom: "1rem",
             }}
-            trigger={["click"]}
           >
-            <Title level={5} style={{ marginBottom: 0 }}>
-              {dashboard.title || "Welcome Back!"} <DownOutlined />
-            </Title>
-          </Dropdown>
-          <Text type="secondary">
-            {dashboard.description || "Dashboard Overview"}
-          </Text>
-        </div>
-        <Space>
-          <Tooltip title="Edit">
-            <Button type="default" icon={<EditOutlined />} />
-          </Tooltip>
-          <Tooltip title="Reload">
-            <Button type="default" icon={<ReloadOutlined />} />
-          </Tooltip>
-          <Tooltip title="Delete">
-            <Button
-              onClick={showDeleteConfirm}
-              type="default"
-              icon={<DeleteOutlined />}
-              disabled={dashboard.id === 1}
+            <div>
+              <Dropdown
+                menu={{
+                  items,
+                }}
+                trigger={["click"]}
+              >
+                <Title level={5} style={{ marginBottom: 0 }}>
+                  {dashboard.title || "Welcome Back!"} <DownOutlined />
+                </Title>
+              </Dropdown>
+              <Text type="secondary">
+                {dashboard.description || "Dashboard Overview"}
+              </Text>
+            </div>
+            <Space>
+              <Tooltip title="Edit">
+                <Button
+                  type="default"
+                  icon={<EditOutlined />}
+                  onClick={onEditDashboard}
+                />
+              </Tooltip>
+              <Tooltip title="Reload">
+                <Button type="default" icon={<ReloadOutlined />} />
+              </Tooltip>
+              <Tooltip title="Delete">
+                <Button
+                  onClick={showDeleteConfirm}
+                  type="default"
+                  icon={<DeleteOutlined />}
+                  disabled={dashboard.id === 1}
+                />
+              </Tooltip>
+              <Divider type="vertical" />
+              <Button type="default" icon={<FilterOutlined />}>
+                Filter by
+              </Button>
+              <Button type="primary" icon={<FileExcelOutlined />}>
+                Export
+              </Button>
+            </Space>
+          </Space>
+          {dashboard.widgets.length ? (
+            <DragNDrop widgets={dashboard.widgets} />
+          ) : (
+            <Empty
+              style={{
+                height: "calc(100vh - 220px)",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+              }}
             />
-          </Tooltip>
-          <Divider type="vertical" />
-          <Button type="default" icon={<FilterOutlined />}>
-            Filter by
-          </Button>
-          <Button type="primary" icon={<FileExcelOutlined />}>
-            Export
-          </Button>
-        </Space>
-      </Space>
-      <DragNDrop widgets={dashboard.widgets} />
-    </div>
+          )}
+        </div>
+      )}
+    </>
   );
 };
 
