@@ -26,7 +26,10 @@ const Login = () => {
     <>
       <Form
         form={form}
-        initialValues={{}}
+        initialValues={{
+          emailAddress: "test@sample.com",
+          password: "testSample"
+        }}
         onFinish={onSubmit}
         style={{
           marginTop: "3rem",
