@@ -24,7 +24,7 @@ import {
 import { Outlet, useNavigate } from "react-router-dom";
 
 import styles from "./app.module.css";
-import logo from "../../logo.png";
+import logo from "../../assets/logo.png";
 
 const { Header, Sider, Content } = Layout;
 const menuItems = [

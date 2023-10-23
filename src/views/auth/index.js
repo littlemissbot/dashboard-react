@@ -2,7 +2,7 @@ import React from "react";
 import { ConfigProvider, Space } from "antd";
 import { Outlet } from "react-router-dom";
 
-import logo from "../../logo.png";
+import logo from "../../assets/logo.png";
 
 const AuthLayout = () => {
   return (
